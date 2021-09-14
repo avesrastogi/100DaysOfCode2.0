@@ -1,0 +1,120 @@
+// Date: 15/09/2021
+// DAY 1/100
+/*
+Vowel and Consonant Substrings!
+Problem Description
+
+Given a string A consisting of lowercase characters.
+
+You have to find the number of substrings in A which starts with vowel and end with consonants or vice-versa.
+
+Return the count of substring modulo 109 + 7.
+
+
+
+Problem Constraints
+1 <= |A| <= 105
+
+A consists only of lower-case characters.
+
+
+
+Input Format
+First argument is an string A.
+
+
+
+Output Format
+Return a integer denoting the the number of substrings in A which starts with vowel and end with consonants or vice-versa with modulo 109 + 7.
+
+
+
+Example Input
+Input 1:
+
+ A = "aba"
+Input 2:
+
+ A = "a"
+
+
+Example Output
+Output 1:
+
+ 2
+Output 2:
+
+ 0
+
+
+Example Explanation
+Explanation 1:
+
+ Substrings of S are : [a, ab, aba, b, ba, a]Out of these only 'ab' and 'ba' satisfy the condition for special Substring. So the answer is 2.
+Explanation 2:
+
+ No possible substring that start with vowel and end with consonant or vice-versa.
+*/
+
+
+
+
+
+int Solution::solve(string A) {
+    int vowelsCount = 0, consonantsCount=0;
+    string vowels = "aeiou";
+    static const size_t npos = -1;
+    vector<int> vowOrCons; 
+    
+    // The logic is to get all combinations i.e. 
+    //count all vowels after a consonant and vice versa. 
+    //Once this answer is obtained, add all the values to obtain the answer.
+    
+    for(int i=0; i<A.length(); i++) {
+        char x = A[i];
+        if(vowels.find(x) != string::npos) {
+            vowelsCount++;
+            vowOrCons.push_back(consonantsCount);
+        }
+        else {
+            consonantsCount++;
+            vowOrCons.push_back(vowelsCount);
+        }
+    }
+    
+    int count = 0;
+    for(int i=0; i<vowOrCons.size(); i++) {
+        count+=(vowOrCons[i])%1000000007;
+    }
+    
+    return count%1000000007;
+}
+
+
+// WORST CASE:
+/*
+
+    int count = 0;
+    static const size_t npos = -1;
+
+    vector<string> substrings;
+    
+    for(int i=0; i<A.length(); i++) {
+        for(int j=1; j<=(A.length()-i); j++) {
+            substrings.push_back(A.substr(i, j));
+        }
+    }
+    
+    string vowels = "aeiou";
+    for(int i=0; i<substrings.size(); i++) {
+        if(substrings[i].length() > 1) {
+            char x = substrings[i][0];
+            char y = substrings[i][substrings[i].length()-1];
+            if(!(vowels.find(x)!=string::npos && vowels.find(y)!=string::npos || vowels.find(x)==string::npos && vowels.find(y)==string::npos)) {
+                count++;
+            }
+        }
+    }
+    return count%1000000007;
+
+*/
