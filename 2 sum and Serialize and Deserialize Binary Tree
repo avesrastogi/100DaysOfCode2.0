@@ -1,0 +1,112 @@
+// DAY 5/100
+/*
+
+2 Sum
+
+Asked In:
+FACEBOOK
+AMAZON
+GOOGLE
+Problem Description
+
+Given an array of integers, find two numbers such that they add up to a specific target number.
+
+The function twoSum should return indices of the two numbers such that they add up to the target, where index1 < index2. Please note that your returned answers (both index1 and index2 ) are not zero-based. Put both these numbers in order in an array and return the array from your function ( Looking at the function signature will make things clearer ). Note that, if no pair exists, return empty list.
+
+If multiple solutions exist, output the one where index2 is minimum. If there are multiple solutions with the minimum index2, choose the one with minimum index1 out of them.
+
+Input: [2, 7, 11, 15], target=9
+Output: index1 = 1, index2 = 2
+
+*/
+
+vector<int> Solution::twoSum(const vector<int> &A, int B) {
+    unordered_map<int,int> mp;
+    vector<int> ans(2);
+    for(int i=0;i<A.size();i++)
+    {
+    if(mp.find(B-A[i])!=mp.end())
+    {
+    ans[0]=mp[B-A[i]]+1;
+    ans[1]=i+1;
+    return ans;
+    }
+    else
+    mp.insert({A[i],i});
+    }
+    return {};
+}
+
+
+
+
+// Serialize and Deserialize Binary Tree
+
+
+/*
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+Clarification: The input/output format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+*/
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if(root == NULL) {
+            return "#";
+        }
+        string leftSerialized = serialize(root->left);
+        string rightSerialized = serialize(root->right);
+        
+        return to_string(root->val) + "," + leftSerialized + "," + rightSerialized;
+        
+    }
+
+    int deserializeHelper(string & data) {
+        int pos = data.find(',');
+        int v = stoi(data.substr(0, pos));
+        data = data.substr(pos+1);
+        return v;
+    }
+    
+    // Decodes your encoded data to tree.
+    TreeNode* deserializeAux(string & data) {
+        if(data[0] == '#') {
+            if(data.size()>1) {
+                data=data.substr(2);
+            }
+            return NULL;
+        }
+        
+        TreeNode * root = new TreeNode(deserializeHelper(data));
+        root->left = deserializeAux(data);
+        root->right = deserializeAux(data);
+        
+        return root;
+    }
+    
+    
+        TreeNode* deserialize(string data) {
+            return deserializeAux(data);
+        }
+
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
