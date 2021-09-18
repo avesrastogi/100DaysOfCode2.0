@@ -1,0 +1,46 @@
+// DAY 4/100
+/*
+https://leetcode.com/problems/sort-the-matrix-diagonally/
+*/
+
+class Solution {
+public:
+    void sort_diagonals(vector<vector<int>>& mat, int row, int col) {
+            int noOfRows = mat.size(), noOfColumns = mat[0].size();
+            int i = row, j = col;
+            vector<int> temp;
+            while(i<noOfRows && j<noOfColumns) {
+                temp.push_back(mat[i][j]);
+                i++;
+                j++;
+            }
+            
+            sort(temp.begin(), temp.end());
+            
+            i = row, j = col;
+            int k = 0;
+            for(int k=0; k<temp.size(); k++) {
+                mat[i++][j++] = temp[k];
+            }            
+        }       
+    
+    vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+        // store diagonals in a vector
+        // sort the vector
+        // replace the diagonal element with the sorted elements
+        
+        int noOfRows = mat.size(), noOfColumns = mat[0].size();
+
+        // upper diagonals
+        for(int j=0; j<noOfColumns; j++) {
+            sort_diagonals(mat, 0, j);
+        }
+        
+        //lower diagonals
+        for(int i=1; i<noOfRows; i++) {
+            sort_diagonals(mat, i, 0);
+        }
+         
+        return mat;
+    }
+};
