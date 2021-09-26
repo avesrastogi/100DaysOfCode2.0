@@ -1,0 +1,145 @@
+// DAY 10&11/100
+/* revised insert at beginning and end to make a string palindrome, watched DP programming videos for min no. of insertions and deletions to make a string palindrome
+
+revised react basics, need to read again from scratch*/
+
+/*
+NOTE: subsequence means common between two strings, perfect substring does not include the orginal string, ex: {aba: a, b, a, ba}
+Longest Palindromic Substring
+Asked in:  
+Amazon
+Microsoft
+Groupon
+Problem Description
+
+Given a string A of size N, find and return the longest palindromic substring in A.
+
+Substring of string A is A[i...j] where 0 <= i <= j < len(A)
+
+Palindrome string:
+A string which reads the same backwards. More formally, A is palindrome if reverse(A) = A.
+
+Incase of conflict, return the substring which occurs first ( with the least starting index).
+
+
+
+Input Format
+First and only argument is a string A.
+
+
+
+Output Format
+Return a string denoting the longest palindromic substring of string A.
+
+
+
+Example Input
+A = "aaaabaaa"
+
+
+Example Output
+"aaabaaa"
+
+*/
+
+
+
+
+
+
+
+
+
+
+/* WORST CASE: O(n^2)
+
+int pal_check(string substr) {
+    string rev_substr = substr;
+    reverse(substr.begin(), substr.end());
+    
+    if(substr == rev_substr) {
+        // cout<<substr.length();
+        return substr.length();
+    }
+    else {
+        return 0;
+    }
+}
+
+string Solution::longestPalindrome(string A) {
+    //find all substrings
+    //check if it is a palindrome
+
+    // loop to find all substrings
+    string res;
+    int n = A.length(), substr_len, max_len = INT_MIN;
+    for(int i=0; i<n; i++) {
+        for(int j=1; j<=n-i; j++) {
+            // cout<<A.substr(i,j)<<" ";
+            substr_len = pal_check(A.substr(i, j));
+            // cout<<substr_len<<" ";
+            if(max_len < substr_len) {
+                max_len = substr_len;
+                res = A.substr(i,j);
+            }
+        }
+    }
+    
+    // cout<<max_len<<" ";
+    return res;
+}
+*/
+
+
+string Solution::longestPalindrome(string A) {
+    int n = A.length();
+    vector<vector<bool>> dp(n, vector<bool>(n, 0));
+    
+    
+
+    // dp[][] = 1, palindrome
+    // dp[][] = 0, not palindrome
+    
+    // for substr.length() = 1
+    for(int i=0; i<n; i++) {
+        dp[i][i] = true;
+    }
+    
+    
+    //only evaluated for strlen >= 3
+    // check if the bounary condition is palindrome
+    // then check if the non-boundary substring is palindrome
+    
+    int max_len = 1, begin = 0;
+
+    // for substr.length() = 2
+    for(int i=0; i<n-1; i++) {
+        if(A[i]==A[i+1]) {
+            dp[i][i+1]=true;
+            begin = i;
+            max_len = 2;
+        }
+    }
+    
+    //for substr.length() >=3
+    //k = length of subtring
+    for(int k=3; k<=n; k++) {
+        // cout<<k;
+        for(int i=0; i<n-k+1; i++) {
+            int j = i+k-1;
+            if(A[i]==A[j] && dp[i+1][j-1]==true) {
+                dp[i][j]=true;
+                if(max_len<k) {
+                    begin = i;
+                    // cout<<begin<<" ";
+                    max_len = k;
+                }
+            }
+            
+
+            // cout<<max_len;
+        }
+    }
+    return A.substr(begin, max_len);
+    
+}
