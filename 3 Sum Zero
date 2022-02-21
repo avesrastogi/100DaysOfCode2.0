@@ -57,3 +57,51 @@ vector<vector<int> > Solution::threeSum(vector<int> &A) {
     res.erase(unique(res.begin(), res.end()), res.end());
     return res;
 }
+
+// lesser time by eliminating erase and unique stl
+/*
+
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& A) {
+    vector<vector<int>> res;
+    
+    sort(A.begin(), A.end());
+    
+    int n = A.size();
+    
+    for(int i=0; i<n-2; i++) {
+        if(i>0 && A[i]==A[i-1]) continue;
+        int l = i+1;
+        int r = n-1;
+        while(l<r) {
+
+            int x = A[i];
+            // cout<<x<<"zz";
+            
+            if((long)x + (long)A[l] + (long)A[r] < 0) {
+                l++;
+            }
+            else if((long)x + (long)A[l] + (long)A[r] > 0){
+                r--;
+            }
+            else {
+                res.push_back(vector<int> {x, A[l], A[r]});
+                while(l+1<r && A[l]==A[l+1]) l++;
+                while(l<r-1 && A[r]==A[r-1]) r--;
+                l++;
+                r--;
+            }
+        }
+    }
+    
+
+    return res;
+    }
+};
+
+
+
+
+*/
