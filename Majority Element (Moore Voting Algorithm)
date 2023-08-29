@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+//        map<int, int> X;
+//        int n = nums.size();
+//        for(auto i : nums) {
+//            X[i]++;
+//        }
+//
+//        for(auto i : nums) {
+//            if(X[i]>n/2) {
+//                return i;
+//            }
+//        }
+//
+//        return NULL;
+
+    //linear time
+    
+        int count = 0, temp = 0;
+        for(int i:nums) {
+            if(count==0)
+                temp = i;
+            if(i==temp) 
+                count++;
+            else
+                count--;
+        }
+        return temp;
+    }
+};
